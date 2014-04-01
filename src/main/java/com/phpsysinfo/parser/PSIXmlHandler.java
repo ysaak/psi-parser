@@ -1,12 +1,11 @@
-package com.phpsysinfo.psiparser.parser;
+package com.phpsysinfo.parser;
 
+import com.phpsysinfo.data.HostData;
 import com.phpsysinfo.data.MountPoint;
-import com.phpsysinfo.data.PSIUps;
 import com.phpsysinfo.data.hardware.Hardware.HardwareType;
 import com.phpsysinfo.data.plugins.Plugin;
-import com.phpsysinfo.psiparser.HostData;
-import com.phpsysinfo.psiparser.utils.ConvertUtils;
-import com.phpsysinfo.psiparser.utils.XmlParsingTools;
+import com.phpsysinfo.parser.utils.ConvertUtils;
+import com.phpsysinfo.parser.utils.XmlParsingTools;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -21,13 +20,6 @@ class PSIXmlHandler extends DefaultHandler {
 
   private boolean inHardware = false;
   private HardwareType hwType = null;
-
-  private boolean inPluginImpi = false;
-  private boolean inPluginImpiTemperature = false;
-
-  private boolean inMbInfo = false;
-  private boolean inMbInfoTemperature = false;
-  private boolean inMbInfoFans = false;
 
   private boolean inPsStatus = false;
 
@@ -118,7 +110,7 @@ class PSIXmlHandler extends DefaultHandler {
 
     // ------------------ PLUGINS ------------------
 
-    // process status
+    // Process status
     else if (name.equalsIgnoreCase("Plugin_PSStatus")) {
       inPsStatus = true;
 
@@ -133,7 +125,9 @@ class PSIXmlHandler extends DefaultHandler {
     }
 
     // Update notifier
-    // TODO: vérifier le format de sortie du plugin
+    else if (name.equalsIgnoreCase("UpdateNotifier")) {
+      this.entry.getPlugins().setPluginAvailable(Plugin.UPDATE_NOTIFIER);
+    }
     else if (name.equalsIgnoreCase("packages")) {
       inPackageUpdate = true;
       buffer.setLength(0);
@@ -152,41 +146,6 @@ class PSIXmlHandler extends DefaultHandler {
       this.entry.getPlugins().getQuotasData().addQuota(XmlParsingTools.attributesToQuota(attributes));
     }
 
-    // ipmi
-    else if (name.equalsIgnoreCase("Plugin_ipmi")) {
-      inPluginImpi = true;
-    }
-    else if (inPluginImpi && name.equalsIgnoreCase("Temperature")) {
-      inPluginImpiTemperature = true;
-    }
-    else if (inPluginImpiTemperature) {
-      if (name.equalsIgnoreCase("Item")) {
-        this.entry.addTemperature(attributes.getValue("Label"), attributes.getValue("Value"));
-      }
-    }
-
-    // mb
-    else if (name.equalsIgnoreCase("MBInfo")) {
-      inMbInfo = true;
-    }
-    else if (inMbInfo && name.equalsIgnoreCase("Temperature")) {
-      inMbInfoTemperature = true;
-    }
-    else if (inMbInfo && name.equalsIgnoreCase("Fans")) {
-      inMbInfoFans = true;
-    }
-    else if (inMbInfoTemperature) {
-      if (name.equalsIgnoreCase("Item")) {
-        this.entry.addTemperature(attributes.getValue("Label"), attributes.getValue("Value"));
-      }
-    }
-    else if (inMbInfoFans) {
-      if (name.equalsIgnoreCase("Item")) {
-        this.entry.addFans(attributes.getValue("Label"), attributes.getValue("Value"));
-      }
-    }
-
-
     // SMART
     else if (name.equalsIgnoreCase("Plugin_SMART")) {
       this.entry.getPlugins().setPluginAvailable(Plugin.SMART);
@@ -197,33 +156,6 @@ class PSIXmlHandler extends DefaultHandler {
     }
     else if (inDisk && name.equalsIgnoreCase("attribute")) {
       this.entry.getPlugins().getSmartData().addDiskAttribute(smartDiskName, XmlParsingTools.attributesToDiskAttribute(attributes));
-    }
-
-    else if (name.equalsIgnoreCase("UPS")) {
-
-      PSIUps ups = new PSIUps();
-
-      ups.setName(attributes.getValue("Name"));
-      ups.setModel(attributes.getValue("Model"));
-      ups.setMode(attributes.getValue("Mode"));
-      ups.setStartTime(attributes.getValue("StartTime"));
-      ups.setStatus(attributes.getValue("Status"));
-      ups.setTemperature(attributes.getValue("Temperature"));
-      ups.setOutagesCount(attributes.getValue("OutagesCount"));
-      ups.setLastOutage(attributes.getValue("LastOutage"));
-      ups.setLastOutageFinish(attributes.getValue("LastOutageFinish"));
-      ups.setLineVoltage(attributes.getValue("LineVoltage"));
-      ups.setLoadPercent(attributes.getValue("LoadPercent"));
-      ups.setBatteryVoltage(attributes.getValue("BatteryVoltage"));
-      ups.setBatteryChargePercent(attributes.getValue("BatteryChargePercent"));
-      ups.setTimeLeftMinutes(attributes.getValue("TimeLeftMinutes"));
-
-      this.entry.setUps(ups);
-    }
-
-    else if (name.equalsIgnoreCase("Raid")) {
-      this.entry.addRaid(attributes.getValue("Device_Name") + " (" + attributes.getValue("Level") + ")", attributes.getValue("Disks_Active"),
-          attributes.getValue("Disks_Registered"));
     }
   }
 
@@ -247,19 +179,6 @@ class PSIXmlHandler extends DefaultHandler {
     }
     else if (inMemory && name.equalsIgnoreCase("Swap")) {
       inSwapMemory = false;
-    }
-    else if (localName.equalsIgnoreCase("Plugin_ipmi")) {
-      inPluginImpi = false;
-    }
-    else if (localName.equalsIgnoreCase("MBInfo")) {
-      inMbInfo = false;
-    }
-    else if (localName.equalsIgnoreCase("Temperature")) {
-      inPluginImpiTemperature = false;
-      inMbInfoTemperature = false;
-    }
-    else if (localName.equalsIgnoreCase("Fans")) {
-      inMbInfoFans = false;
     }
     else if (localName.equalsIgnoreCase("Plugin_PSStatus")) {
       inPsStatus = false;

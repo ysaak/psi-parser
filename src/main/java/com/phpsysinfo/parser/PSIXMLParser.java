@@ -1,4 +1,4 @@
-package com.phpsysinfo.psiparser.parser;
+package com.phpsysinfo.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -9,8 +9,7 @@ import java.net.URL;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import com.phpsysinfo.psiparser.HostData;
-import com.phpsysinfo.psiparser.PSIParserException;
+import com.phpsysinfo.data.HostData;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;

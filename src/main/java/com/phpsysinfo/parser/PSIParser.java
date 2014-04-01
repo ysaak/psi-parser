@@ -1,4 +1,4 @@
-package com.phpsysinfo.psiparser.parser;
+package com.phpsysinfo.parser;
 
 
 import java.io.IOException;
@@ -8,9 +8,8 @@ import java.net.URL;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import com.phpsysinfo.psiparser.HostData;
-import com.phpsysinfo.psiparser.PSIParserException;
-import com.phpsysinfo.psiparser.utils.HttpUtils;
+import com.phpsysinfo.data.HostData;
+import com.phpsysinfo.parser.utils.HttpUtils;
 
 
 public abstract class PSIParser {

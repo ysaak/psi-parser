@@ -1,4 +1,4 @@
-package com.phpsysinfo.psiparser;
+package com.phpsysinfo.parser;
 
 public class PSIParserException extends Exception {
 

@@ -1,4 +1,4 @@
-package com.phpsysinfo.psiparser.utils;
+package com.phpsysinfo.parser.utils;
 
 public abstract class ConvertUtils {
 

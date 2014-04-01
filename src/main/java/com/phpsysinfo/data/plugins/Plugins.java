@@ -29,8 +29,6 @@ public class Plugins {
 
     switch (plugin) {
       case PS_STATUS: psStatusData = new PSStatusData(); break;
-      case IPMI:
-        break;
       case UPDATE_NOTIFIER: updateNotifierData = new UpdateNotifierData(); break;
       case QUOTAS: quotasData = new QuotasData(); break;
       case SMART: smartData = new SmartData(); break;

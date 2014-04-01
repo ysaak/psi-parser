@@ -4,7 +4,11 @@ import java.io.IOException;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import com.phpsysinfo.data.HostData;
+import com.phpsysinfo.parser.PSIParser;
+import com.phpsysinfo.parser.PSIParserException;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class XMLParserTest {
@@ -14,11 +18,15 @@ public class XMLParserTest {
   }
 
   @Test
-  public void testXML() throws IOException {
+  public void testXML() throws IOException, PSIParserException {
 
     String fileContent = Resources.toString(Resources.getResource("psi_full_xml.xml"), Charsets.UTF_8);
 
-    System.err.println(fileContent.length());
 
+    final PSIParser parser = PSIParser.getXMLParser();
+    HostData data = parser.parseServerData(fileContent);
+
+
+    Assert.assertEquals(data.getPsiVersion(), "3.1.11");
   }
 }

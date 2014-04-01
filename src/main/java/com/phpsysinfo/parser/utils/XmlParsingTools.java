@@ -1,4 +1,4 @@
-package com.phpsysinfo.psiparser.utils;
+package com.phpsysinfo.parser.utils;
 
 
 import com.google.common.base.Splitter;
