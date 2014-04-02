@@ -10,7 +10,7 @@ public abstract class ConvertUtils {
     try {
       return Integer.parseInt(intString);
     }
-    catch (NumberFormatException e) {
+    catch (Throwable e) {
       return defaultValue;
     }
   }
@@ -23,7 +23,7 @@ public abstract class ConvertUtils {
     try {
       return Long.parseLong(longString);
     }
-    catch (NumberFormatException e) {
+    catch (Throwable e) {
       return defaultValue;
     }
   }
@@ -36,7 +36,7 @@ public abstract class ConvertUtils {
     try {
       return Double.parseDouble(doubleString);
     }
-    catch (NumberFormatException e) {
+    catch (Throwable e) {
       return defaultValue;
     }
   }
