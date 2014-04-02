@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
 import com.phpsysinfo.data.HostData;
+import com.phpsysinfo.parser.PSIError;
 import com.phpsysinfo.parser.PSIParser;
 import com.phpsysinfo.parser.PSIParserException;
 
@@ -24,9 +25,13 @@ public class XMLParserTest {
 
 
     final PSIParser parser = PSIParser.getXMLParser();
-    HostData data = parser.parseServerData(fileContent);
-
-
-    Assert.assertEquals(data.getPsiVersion(), "3.1.11");
+    HostData data;
+    try {
+      data = parser.parseServerData(fileContent);
+      Assert.assertEquals(data.getPsiVersion(), "3.1.11");
+    }
+    catch (PSIError e) {
+      Assert.fail(e.getMessage());
+    }
   }
 }

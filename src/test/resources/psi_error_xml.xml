@@ -1,0 +1,7 @@
+<?xml version='1.0'?>
+<phpsysinfo>
+  <Error>
+    <Function>checkForExtensions</Function>
+    <Message>phpSysInfo requires the com_dotnet extension to php in order to work properly.</Message>
+  </Error>
+</phpsysinfo>

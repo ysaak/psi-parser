@@ -17,7 +17,7 @@ import org.xml.sax.helpers.DefaultHandler;
 class PSIXMLParser extends PSIParser {
 
   @Override
-  public HostData parseServerData(String serverXML) throws PSIParserException {
+  public HostData parseServerData(String serverXML) throws PSIParserException, PSIError {
     // Build parser
     SAXParser parser = null;
 

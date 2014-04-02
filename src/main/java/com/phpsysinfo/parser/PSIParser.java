@@ -14,14 +14,14 @@ import com.phpsysinfo.parser.utils.HttpUtils;
 
 public abstract class PSIParser {
 
-  public abstract HostData parseServerData(String serverXML) throws PSIParserException;
+  public abstract HostData parseServerData(String serverXML) throws PSIParserException, PSIError;
   protected abstract URL getServerUri(String urlString) throws MalformedURLException;
 
   public static PSIParser getXMLParser() {
     return new PSIXMLParser();
   }
 
-  public HostData getServerData(String urlString, String username, String password) throws PSIParserException {
+  public HostData getServerData(String urlString, String username, String password) throws PSIParserException, PSIError {
 
     final URL serverURL;
     try {
