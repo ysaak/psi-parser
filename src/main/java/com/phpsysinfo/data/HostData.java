@@ -31,7 +31,7 @@ public class HostData {
   private final Plugins plugins = new Plugins();
 
   public void addFSMountPoint(MountPoint mountPoint) {
-    fileSystem.put(mountPoint.getName(), mountPoint);
+    fileSystem.put(mountPoint.getMountPoint(), mountPoint);
   }
 
   public void addNetworkInterface(NetworkInterface networkInterface) {
